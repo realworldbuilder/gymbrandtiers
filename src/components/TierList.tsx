@@ -93,11 +93,10 @@ export function TierList() {
   }, []);
 
   const handleExportPng = useCallback(async () => {
-    const el = document.getElementById('tier-list-container');
+    const el = document.getElementById('tier-list-export');
     if (!el) return;
     setIsExporting(true);
     try {
-      // Convert all images to base64 to avoid CORS issues
       const images = el.querySelectorAll('img');
       const originals: { img: HTMLImageElement; src: string }[] = [];
 
@@ -115,13 +114,10 @@ export function TierList() {
               });
               img.src = base64;
             }
-          } catch {
-            // Keep original src if proxy fails
-          }
+          } catch { /* keep original */ }
         })
       );
 
-      // Small delay for images to settle
       await new Promise(r => setTimeout(r, 100));
 
       const dataUrl = await toPng(el, {
@@ -130,7 +126,6 @@ export function TierList() {
         skipFonts: true,
       });
 
-      // Restore original srcs
       originals.forEach(({ img, src }) => { img.src = src; });
 
       const link = document.createElement('a');
@@ -147,21 +142,19 @@ export function TierList() {
 
   return (
     <div className="min-h-screen bg-background text-text-primary">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="font-display text-6xl tracking-wider text-text-primary">
-            Product Tier List
-          </h1>
-          <p className="font-mono text-sm text-text-muted mt-1">
-            Drag and drop to rank products
-          </p>
-        </div>
-
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-          <div className="flex items-center gap-0">
-            <PresetSelector currentPreset={currentPreset} onPresetChange={loadPreset} />
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        {/* Header - compact */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="font-display text-4xl tracking-wider text-text-primary leading-none">
+              Product Tier List
+            </h1>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="font-mono text-xs text-text-muted">presented by</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/gs-icon.png" alt="GymSignal" className="w-4 h-4 rounded-sm" />
+              <span className="font-mono text-xs text-text-secondary">GymSignal</span>
+            </div>
           </div>
           <button
             onClick={handleExportPng}
@@ -172,36 +165,29 @@ export function TierList() {
           </button>
         </div>
 
-        {/* Add Product Input */}
-        <div className="mb-6">
+        {/* Presets + Search row */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+          <PresetSelector currentPreset={currentPreset} onPresetChange={loadPreset} />
           <AddProductForm onAddProduct={handleAddProduct} />
         </div>
 
-        {/* Tier List */}
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div id="tier-list-container" className="border border-border">
-            {TIER_LABELS.map(tier => (
-              <TierRow
-                key={tier}
-                tier={tier}
-                products={tiers[tier]}
-                onDeleteProduct={handleDeleteProduct}
-              />
-            ))}
-          </div>
-
-          {/* Unranked */}
-          <div className="unranked-section">
-            <p className="font-mono text-sm text-text-muted mb-2">Unranked</p>
+          {/* Unranked - right after controls */}
+          <div className="mb-3">
             <Droppable droppableId="unranked" direction="horizontal">
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className={`unranked-grid border border-border ${
+                  className={`flex flex-wrap gap-1 min-h-[70px] p-2 border border-border ${
                     snapshot.isDraggingOver ? 'bg-white/5' : ''
                   }`}
                 >
+                  {tiers.unranked.length === 0 && (
+                    <div className="text-text-muted text-xs font-mono w-full text-center py-4">
+                      Search for brands above or select a preset to get started
+                    </div>
+                  )}
                   {tiers.unranked.map((product, index) => (
                     <ProductItem
                       key={product.id}
@@ -211,14 +197,30 @@ export function TierList() {
                     />
                   ))}
                   {provided.placeholder}
-                  {tiers.unranked.length === 0 && (
-                    <div className="text-text-muted text-xs font-mono w-full text-center py-6">
-                      Add products using the input above or select a preset
-                    </div>
-                  )}
                 </div>
               )}
             </Droppable>
+          </div>
+
+          {/* Tier List */}
+          <div id="tier-list-export" className="border border-border">
+            {/* Watermark header for export */}
+            <div className="flex items-center justify-between px-3 py-1.5 bg-surface/80 border-b border-border">
+              <div className="flex items-center gap-1.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/gs-icon.png" alt="GymSignal" className="w-3.5 h-3.5 rounded-sm" />
+                <span className="font-mono text-[10px] text-text-muted">gymsignal.app</span>
+              </div>
+              <span className="font-mono text-[10px] text-text-muted">Product Tier List</span>
+            </div>
+            {TIER_LABELS.map(tier => (
+              <TierRow
+                key={tier}
+                tier={tier}
+                products={tiers[tier]}
+                onDeleteProduct={handleDeleteProduct}
+              />
+            ))}
           </div>
         </DragDropContext>
       </div>
