@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'DM Mono', monospace;
+  }
+  
+  body {
+    background-color: #0a0a0a;
+    color: #f0f0f0;
+  }
+}
+
+@layer components {
+  .tier-row {
+    @apply flex items-stretch border-b border-border;
+  }
+
+  .tier-label {
+    @apply w-[60px] min-w-[60px] flex items-center justify-center font-mono text-xl font-medium text-white;
+  }
+
+  .tier-content {
+    @apply flex-1 min-h-[70px] flex flex-wrap items-center gap-1 p-2 bg-surface/50;
+  }
+
+  .product-item {
+    @apply relative w-[60px] h-[60px] overflow-hidden cursor-grab active:cursor-grabbing transition-transform;
+  }
+
+  .product-item img {
+    @apply w-full h-full object-contain bg-white;
+  }
+
+  .product-item .product-name {
+    @apply absolute bottom-0 left-0 right-0 bg-black/80 text-[8px] text-center text-white py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate px-0.5;
+  }
+
+  .delete-button {
+    @apply absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] leading-none opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10;
+  }
+
+  .unranked-section {
+    @apply mt-4 pt-4;
+  }
+
+  .unranked-grid {
+    @apply flex flex-wrap gap-1 min-h-[70px] p-2;
+  }
+}
