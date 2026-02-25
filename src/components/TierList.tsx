@@ -92,36 +92,65 @@ export function TierList() {
     });
   }, []);
 
+  const imgToBase64 = async (url: string): Promise<string> => {
+    // Try server proxy first
+    try {
+      const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(url));
+      if (res.ok) {
+        const blob = await res.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+    } catch { /* fallback below */ }
+
+    // Fallback: draw to canvas via Image element
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || 128;
+        canvas.height = img.naturalHeight || 128;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        } else {
+          resolve(url);
+        }
+      };
+      img.onerror = () => resolve(url);
+      img.src = url;
+    });
+  };
+
   const handleExportPng = useCallback(async () => {
     const el = document.getElementById('tier-list-export');
     if (!el) return;
     setIsExporting(true);
     try {
-      // First, convert all images to base64 via our proxy to avoid CORS
-      const images = el.querySelectorAll('img');
-      const originals: { img: HTMLImageElement; src: string }[] = [];
+      // Convert all images to base64 before rendering
+      const images = Array.from(el.querySelectorAll('img'));
+      const originals = images.map(img => ({ img, src: img.src }));
 
-      await Promise.all(
-        Array.from(images).map(async (img) => {
-          const origSrc = img.src;
-          originals.push({ img, src: origSrc });
-          try {
-            const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(origSrc));
-            if (res.ok) {
-              const blob = await res.blob();
-              const b64 = await new Promise<string>((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result as string);
-                reader.readAsDataURL(blob);
-              });
-              img.src = b64;
-            }
-          } catch { /* keep original */ }
-        })
+      // Convert in parallel
+      const base64Results = await Promise.all(
+        originals.map(({ src }) => imgToBase64(src))
       );
 
-      // Wait for images to settle
-      await new Promise(r => setTimeout(r, 200));
+      // Apply base64 sources
+      originals.forEach(({ img }, i) => {
+        img.src = base64Results[i];
+      });
+
+      // Wait for DOM to update
+      await new Promise(r => setTimeout(r, 300));
 
       const canvas = await html2canvas(el, {
         backgroundColor: '#0a0a0a',
