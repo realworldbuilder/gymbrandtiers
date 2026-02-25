@@ -163,10 +163,42 @@ export function TierList() {
       // Restore originals
       originals.forEach(({ img, src }) => { img.src = src; });
 
-      const link = document.createElement('a');
-      link.download = 'product-tier-list.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          alert('Export failed');
+          setIsExporting(false);
+          return;
+        }
+
+        // Try native share (mobile)
+        if (navigator.share && navigator.canShare) {
+          const file = new File([blob], 'tier-list.png', { type: 'image/png' });
+          const shareData = { files: [file], title: 'My Product Tier List', text: 'Check out my tier list — gymbrandtiers.vercel.app' };
+          if (navigator.canShare(shareData)) {
+            try {
+              await navigator.share(shareData);
+              setIsExporting(false);
+              return;
+            } catch (e) {
+              // User cancelled share — fall through to download
+              if ((e as Error).name === 'AbortError') {
+                setIsExporting(false);
+                return;
+              }
+            }
+          }
+        }
+
+        // Fallback: download
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'product-tier-list.png';
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        setIsExporting(false);
+      }, 'image/png');
+      return;
     } catch (error) {
       console.error('Failed to export PNG:', error);
       alert('Export failed — try again');
@@ -194,9 +226,9 @@ export function TierList() {
           <button
             onClick={handleExportPng}
             disabled={isExporting}
-            className="px-4 py-2 font-mono text-sm bg-white text-black hover:bg-gray-200 transition-colors disabled:opacity-50"
+            className="px-4 py-2 font-mono text-sm bg-white text-black hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center gap-2"
           >
-            {isExporting ? 'Exporting...' : 'Export PNG'}
+            {isExporting ? '...' : '↗ Share'}
           </button>
         </div>
 
