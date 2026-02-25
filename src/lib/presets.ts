@@ -7,6 +7,19 @@ const fav = (domain: string) =>
   `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
 export const PRESETS: Record<string, PresetData> = {
+  'gym-apparel': {
+    name: 'Gym Apparel',
+    products: [
+      { id: 'youngla', name: 'YoungLA', image: bf('idHdc2miof'), url: 'https://youngla.com' },
+      { id: 'darc-sport', name: 'Darc Sport', image: bf('id39XINMHV'), url: 'https://darcsport.com' },
+      { id: 'gymshark', name: 'Gymshark', image: bf('idm2qgZM-w'), url: 'https://gymshark.com' },
+      { id: 'dfyne', name: 'DFYNE', image: bf('idtjLp_VYk'), url: 'https://dfyne.com' },
+      { id: 'alphalete', name: 'Alphalete', image: bf('idt_lIytzb'), url: 'https://alphaleteathletics.com' },
+      { id: 'vuori', name: 'Vuori', image: bf('idCoBHZ2C0'), url: 'https://vuoriclothing.com' },
+      { id: 'lululemon', name: 'lululemon', image: bf('idPjBRPVWS'), url: 'https://lululemon.com' },
+      { id: 'raw-gear', name: 'Raw Gear', image: fav('rawgear.com'), url: 'https://rawgear.com' },
+    ]
+  },
   'fitness-apps': {
     name: 'Fitness Apps',
     products: [
@@ -35,19 +48,6 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'ryse', name: 'RYSE Supplements', image: bf('idXKaSU2qc'), url: 'https://rysesupplements.com' },
       { id: 'raw-nutrition', name: 'Raw Nutrition', image: bf('idiwyW79a_'), url: 'https://getrawnutrition.com' },
       { id: 'ghost', name: 'Ghost', image: fav('ghostlifestyle.com'), url: 'https://ghostlifestyle.com' },
-    ]
-  },
-  'gym-apparel': {
-    name: 'Gym Apparel',
-    products: [
-      { id: 'youngla', name: 'YoungLA', image: bf('idHdc2miof'), url: 'https://youngla.com' },
-      { id: 'darc-sport', name: 'Darc Sport', image: bf('id39XINMHV'), url: 'https://darcsport.com' },
-      { id: 'gymshark', name: 'Gymshark', image: bf('idm2qgZM-w'), url: 'https://gymshark.com' },
-      { id: 'dfyne', name: 'DFYNE', image: bf('idtjLp_VYk'), url: 'https://dfyne.com' },
-      { id: 'alphalete', name: 'Alphalete', image: bf('idt_lIytzb'), url: 'https://alphaleteathletics.com' },
-      { id: 'vuori', name: 'Vuori', image: bf('idCoBHZ2C0'), url: 'https://vuoriclothing.com' },
-      { id: 'lululemon', name: 'lululemon', image: bf('idPjBRPVWS'), url: 'https://lululemon.com' },
-      { id: 'raw-gear', name: 'Raw Gear', image: fav('rawgear.com'), url: 'https://rawgear.com' },
     ]
   },
   'gym-chains': {
