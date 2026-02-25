@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
-import { toPng } from 'html-to-image';
+import html2canvas from 'html2canvas-pro';
 import { Product, TierData, TierKey, TIER_LABELS, ScrapedProduct } from '@/types';
 import { PRESETS } from '@/lib/presets';
 import { saveToLocalStorage, loadFromLocalStorage } from '@/lib/storage';
@@ -97,40 +97,46 @@ export function TierList() {
     if (!el) return;
     setIsExporting(true);
     try {
+      // First, convert all images to base64 via our proxy to avoid CORS
       const images = el.querySelectorAll('img');
       const originals: { img: HTMLImageElement; src: string }[] = [];
 
       await Promise.all(
         Array.from(images).map(async (img) => {
+          const origSrc = img.src;
+          originals.push({ img, src: origSrc });
           try {
-            originals.push({ img, src: img.src });
-            const response = await fetch('/api/proxy-image?url=' + encodeURIComponent(img.src));
-            if (response.ok) {
-              const blob = await response.blob();
-              const reader = new FileReader();
-              const base64 = await new Promise<string>((resolve) => {
+            const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(origSrc));
+            if (res.ok) {
+              const blob = await res.blob();
+              const b64 = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result as string);
                 reader.readAsDataURL(blob);
               });
-              img.src = base64;
+              img.src = b64;
             }
           } catch { /* keep original */ }
         })
       );
 
-      await new Promise(r => setTimeout(r, 100));
+      // Wait for images to settle
+      await new Promise(r => setTimeout(r, 200));
 
-      const dataUrl = await toPng(el, {
+      const canvas = await html2canvas(el, {
         backgroundColor: '#0a0a0a',
-        pixelRatio: 2,
-        skipFonts: true,
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
       });
 
+      // Restore originals
       originals.forEach(({ img, src }) => { img.src = src; });
 
       const link = document.createElement('a');
       link.download = 'product-tier-list.png';
-      link.href = dataUrl;
+      link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (error) {
       console.error('Failed to export PNG:', error);
