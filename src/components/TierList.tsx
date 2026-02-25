@@ -6,6 +6,7 @@ import html2canvas from 'html2canvas-pro';
 import { Product, TierData, TierKey, TIER_LABELS, ScrapedProduct } from '@/types';
 import { PRESETS } from '@/lib/presets';
 import { saveToLocalStorage, loadFromLocalStorage } from '@/lib/storage';
+import { getCachedImage, cacheImage } from '@/lib/imageCache';
 import { TierRow } from './TierRow';
 import { ProductItem } from './ProductItem';
 import { AddProductForm } from './AddProductForm';
@@ -92,64 +93,24 @@ export function TierList() {
     });
   }, []);
 
-  const imgToBase64 = async (url: string): Promise<string> => {
-    // Try server proxy first
-    try {
-      const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(url));
-      if (res.ok) {
-        const blob = await res.blob();
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-      }
-    } catch { /* fallback below */ }
-
-    // Fallback: draw to canvas via Image element
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth || 128;
-        canvas.height = img.naturalHeight || 128;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL('image/png'));
-        } else {
-          resolve(url);
-        }
-      };
-      img.onerror = () => resolve(url);
-      img.src = url;
-    });
-  };
-
   const handleExportPng = useCallback(async () => {
     const el = document.getElementById('tier-list-export');
     if (!el) return;
     setIsExporting(true);
     try {
-      // Convert all images to base64 before rendering
+      // Ensure all images are cached
       const images = Array.from(el.querySelectorAll('img'));
-      const originals = images.map(img => ({ img, src: img.src }));
+      await Promise.all(images.map(img => cacheImage(img.src)));
 
-      // Convert in parallel
-      const base64Results = await Promise.all(
-        originals.map(({ src }) => imgToBase64(src))
-      );
-
-      // Apply base64 sources
-      originals.forEach(({ img }, i) => {
-        img.src = base64Results[i];
+      // Swap to base64 versions
+      const originals = images.map(img => {
+        const origSrc = img.src;
+        const cached = getCachedImage(origSrc);
+        if (cached) img.src = cached;
+        return { img, src: origSrc };
       });
 
-      // Wait for DOM to update
+      // Wait for DOM
       await new Promise(r => setTimeout(r, 300));
 
       const canvas = await html2canvas(el, {

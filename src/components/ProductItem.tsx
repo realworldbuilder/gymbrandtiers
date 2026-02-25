@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Product } from '@/types';
 import { Draggable } from '@hello-pangea/dnd';
+import { cacheImage } from '@/lib/imageCache';
 
 interface ProductItemProps {
   product: Product;
@@ -10,6 +12,11 @@ interface ProductItemProps {
 }
 
 export function ProductItem({ product, index, onDelete }: ProductItemProps) {
+  // Pre-cache image for export as soon as it renders
+  useEffect(() => {
+    cacheImage(product.image);
+  }, [product.image]);
+
   return (
     <Draggable draggableId={product.id} index={index}>
       {(provided, snapshot) => (
@@ -31,7 +38,7 @@ export function ProductItem({ product, index, onDelete }: ProductItemProps) {
                 const domain = new URL(product.url).hostname;
                 target.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
               } catch {
-                target.src = `https://via.placeholder.com/60x60/333/fff?text=${encodeURIComponent(product.name.charAt(0))}`;
+                target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect fill="%23333" width="60" height="60"/><text x="50%" y="55%" fill="white" font-size="20" text-anchor="middle">${product.name.charAt(0)}</text></svg>`;
               }
             }}
           />
