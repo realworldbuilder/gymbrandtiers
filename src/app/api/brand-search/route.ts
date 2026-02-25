@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
     const results = (Array.isArray(data) ? data : []).slice(0, 8).map((item: Record<string, unknown>) => ({
       name: item.name as string,
       domain: item.domain as string,
-      icon: item.icon as string,
+      // Use higher quality icon format
+      icon: `https://cdn.brandfetch.io/${item.brandId}/w/400/h/400/theme/dark/icon.jpeg`,
       brandId: item.brandId as string,
     }));
 
