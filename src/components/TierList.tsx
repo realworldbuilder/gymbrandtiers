@@ -97,17 +97,49 @@ export function TierList() {
     if (!el) return;
     setIsExporting(true);
     try {
+      // Convert all images to base64 to avoid CORS issues
+      const images = el.querySelectorAll('img');
+      const originals: { img: HTMLImageElement; src: string }[] = [];
+
+      await Promise.all(
+        Array.from(images).map(async (img) => {
+          try {
+            originals.push({ img, src: img.src });
+            const response = await fetch('/api/proxy-image?url=' + encodeURIComponent(img.src));
+            if (response.ok) {
+              const blob = await response.blob();
+              const reader = new FileReader();
+              const base64 = await new Promise<string>((resolve) => {
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.readAsDataURL(blob);
+              });
+              img.src = base64;
+            }
+          } catch {
+            // Keep original src if proxy fails
+          }
+        })
+      );
+
+      // Small delay for images to settle
+      await new Promise(r => setTimeout(r, 100));
+
       const dataUrl = await toPng(el, {
         backgroundColor: '#0a0a0a',
-        width: el.scrollWidth,
-        height: el.scrollHeight,
+        pixelRatio: 2,
+        skipFonts: true,
       });
+
+      // Restore original srcs
+      originals.forEach(({ img, src }) => { img.src = src; });
+
       const link = document.createElement('a');
       link.download = 'product-tier-list.png';
       link.href = dataUrl;
       link.click();
     } catch (error) {
       console.error('Failed to export PNG:', error);
+      alert('Export failed — try again');
     } finally {
       setIsExporting(false);
     }
