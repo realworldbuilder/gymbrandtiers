@@ -11,6 +11,7 @@ import { TierRow } from './TierRow';
 import { ProductItem } from './ProductItem';
 import { AddProductForm } from './AddProductForm';
 import { PresetSelector } from './PresetSelector';
+import { BASE_PATH } from '@/lib/config';
 import { EmailGate } from './EmailGate';
 
 export function TierList() {
@@ -181,7 +182,7 @@ export function TierList() {
             <div className="flex items-center gap-1.5 mt-1">
               <span className="font-mono text-xs text-text-muted">presented by</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/gs-icon.png" alt="GymSignal" className="w-4 h-4 rounded-sm" />
+              <img src={`${BASE_PATH}/gs-icon.png`} alt="GymSignal" className="w-4 h-4 rounded-sm" />
               <span className="font-mono text-xs text-text-secondary">GymSignal</span>
             </div>
           </div>
@@ -237,7 +238,7 @@ export function TierList() {
             <div className="flex items-center justify-between px-3 py-1.5 bg-surface/80 border-b border-border">
               <div className="flex items-center gap-1.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/gs-icon.png" alt="GymSignal" className="w-3.5 h-3.5 rounded-sm" />
+                <img src={`${BASE_PATH}/gs-icon.png`} alt="GymSignal" className="w-3.5 h-3.5 rounded-sm" />
                 <span className="font-mono text-[10px] text-text-muted">gymsignal.app</span>
               </div>
               <span className="font-mono text-[10px] text-text-muted">Product Tier List</span>
