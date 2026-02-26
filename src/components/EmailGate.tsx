@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { EMAIL_WEBHOOK_URL } from '@/lib/config';
 
 interface EmailGateProps {
   className?: string;
@@ -26,28 +27,28 @@ export function EmailGate({ className = '' }: EmailGateProps) {
 
     setIsSubmitting(true);
     
-    try {
-      // Submit to Formspree (placeholder endpoint)
-      await fetch('https://formspree.io/f/xyzplaceholder', {
+    // Fire and forget webhook submission (if configured)
+    if (EMAIL_WEBHOOK_URL) {
+      fetch(EMAIL_WEBHOOK_URL, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ 
+          email, 
+          timestamp: new Date().toISOString(),
+          source: 'tier-list'
+        }),
+      }).catch(() => {
+        // Silently fail - we don't want to block the UX
       });
-
-      // Mark as submitted
-      localStorage.setItem('gymsignal-email-submitted', 'true');
-      setHasSubmitted(true);
-      setShowCode(true);
-    } catch (error) {
-      console.error('Failed to submit email:', error);
-      // Show code anyway for demo purposes
-      setShowCode(true);
-    } finally {
-      setIsSubmitting(false);
     }
+
+    // Always mark as submitted and show code (don't wait for webhook)
+    localStorage.setItem('gymsignal-email-submitted', 'true');
+    setHasSubmitted(true);
+    setShowCode(true);
+    setIsSubmitting(false);
   };
 
   const handleShowCode = () => {

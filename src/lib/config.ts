@@ -1,0 +1,1 @@
+export const EMAIL_WEBHOOK_URL = process.env.NEXT_PUBLIC_EMAIL_WEBHOOK || '';
