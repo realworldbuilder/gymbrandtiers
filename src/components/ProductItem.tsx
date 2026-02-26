@@ -34,6 +34,16 @@ export function ProductItem({ product, index, onDelete }: ProductItemProps) {
             className="w-full h-full object-contain bg-white"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
+              // If it's an unavatar/instagram URL, skip favicon fallback — go straight to initials
+              if (product.image.includes('unavatar.io')) {
+                const name = product.name.replace(/@\w+\s*/, '').replace(/[()]/g, '').trim() || product.name;
+                const words = name.split(' ');
+                const init = words.length > 1 ? words.map(w => w[0]).join('').substring(0, 2) : name.substring(0, 2);
+                const colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#1abc9c','#e84393'];
+                const color = colors[product.id.charCodeAt(0) % colors.length];
+                target.src = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="100" cy="100" r="100" fill="${color}"/><text x="100" y="100" text-anchor="middle" dominant-baseline="central" fill="white" font-family="monospace" font-size="60" font-weight="bold">${init.toUpperCase()}</text></svg>`)}`;
+                return;
+              }
               try {
                 const domain = new URL(product.url).hostname;
                 target.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;

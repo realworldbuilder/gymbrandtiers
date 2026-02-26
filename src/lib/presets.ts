@@ -3,6 +3,10 @@ import { PresetData } from '@/types';
 const bf = (brandId: string) =>
   `https://cdn.brandfetch.io/${brandId}/w/400/h/400/theme/dark/icon.jpeg`;
 
+// Instagram profile pic via unavatar.io (fetched client-side, per-user rate limits)
+const ig = (handle: string) =>
+  `https://unavatar.io/instagram/${handle}?fallback=false`;
+
 // Helper function to create initials-based SVG data URI for non-brand items
 const initials = (name: string, color: string) => {
   const words = name.split(' ');
@@ -141,21 +145,34 @@ export const PRESETS: Record<string, PresetData> = {
   'gym-influencers': {
     name: 'Gym Influencers',
     products: [
-      { id: 'chris-bumstead', name: 'Chris Bumstead (CBum)', image: initials('Chris Bumstead', '#e74c3c'), url: 'https://instagram.com/cbum' },
-      { id: 'sam-sulek', name: 'Sam Sulek', image: initials('Sam Sulek', '#e67e22'), url: 'https://instagram.com/sam_sulek' },
-      { id: 'noel-deyzel', name: 'Noel Deyzel', image: initials('Noel Deyzel', '#f1c40f'), url: 'https://instagram.com/noeldeyzel_' },
-      { id: 'jeff-nippard', name: 'Jeff Nippard', image: initials('Jeff Nippard', '#2ecc71'), url: 'https://jeffnippard.com' },
-      { id: 'greg-doucette', name: 'Greg Doucette', image: initials('Greg Doucette', '#3498db'), url: 'https://gregdoucette.com' },
-      { id: 'will-tennyson', name: 'Will Tennyson', image: initials('Will Tennyson', '#9b59b6'), url: 'https://instagram.com/willtenny' },
-      { id: 'jesse-james-west', name: 'Jesse James West', image: initials('Jesse James West', '#1abc9c'), url: 'https://instagram.com/jessejameswest' },
-      { id: 'alex-eubank', name: 'Alex Eubank', image: initials('Alex Eubank', '#e84393'), url: 'https://instagram.com/alexeubank' },
-      { id: 'david-laid', name: 'David Laid', image: initials('David Laid', '#e74c3c'), url: 'https://instagram.com/davidlaid' },
-      { id: 'lexx-little', name: 'Lexx Little', image: initials('Lexx Little', '#e67e22'), url: 'https://instagram.com/lexx_little' },
-      { id: 'nick-walker', name: 'Nick Walker', image: initials('Nick Walker', '#f1c40f'), url: 'https://instagram.com/nick_walker39' },
-      { id: 'derek-mpmd', name: 'Derek (MPMD)', image: initials('Derek MPMD', '#2ecc71'), url: 'https://moreplatesmoredates.com' },
-      { id: 'stephanie-buttermore', name: 'Stephanie Buttermore', image: initials('Stephanie Buttermore', '#3498db'), url: 'https://instagram.com/stephanie_buttermore' },
-      { id: 'whitney-simmons', name: 'Whitney Simmons', image: initials('Whitney Simmons', '#9b59b6'), url: 'https://instagram.com/whitneyysimmons' },
-      { id: 'krissy-cela', name: 'Krissy Cela', image: initials('Krissy Cela', '#1abc9c'), url: 'https://instagram.com/krissycela' },
+      // Male bodybuilding / physique
+      { id: 'cbum', name: '@cbum (Chris Bumstead)', image: ig('cbum'), url: 'https://instagram.com/cbum' },
+      { id: 'sam-sulek', name: '@sam_sulek', image: ig('sam_sulek'), url: 'https://instagram.com/sam_sulek' },
+      { id: 'noel-deyzel', name: '@noeldeyzel_ (Noel Deyzel)', image: ig('noeldeyzel_'), url: 'https://instagram.com/noeldeyzel_' },
+      { id: 'jeff-nippard', name: '@jeffnippard', image: ig('jeffnippard'), url: 'https://instagram.com/jeffnippard' },
+      { id: 'greg-doucette', name: '@gregdoucette', image: ig('gregdoucette'), url: 'https://instagram.com/gregdoucette' },
+      { id: 'will-tennyson', name: '@willtenny (Will Tennyson)', image: ig('willtenny'), url: 'https://instagram.com/willtenny' },
+      { id: 'jesse-james-west', name: '@jessejameswest', image: ig('jessejameswest'), url: 'https://instagram.com/jessejameswest' },
+      { id: 'alex-eubank', name: '@alexeubank', image: ig('alexeubank'), url: 'https://instagram.com/alexeubank' },
+      { id: 'david-laid', name: '@davidlaid', image: ig('davidlaid'), url: 'https://instagram.com/davidlaid' },
+      { id: 'lexx-little', name: '@lexx_little', image: ig('lexx_little'), url: 'https://instagram.com/lexx_little' },
+      { id: 'nick-walker', name: '@nick_walker39 (Nick Walker)', image: ig('nick_walker39'), url: 'https://instagram.com/nick_walker39' },
+      { id: 'derek-mpmd', name: '@derek_fit (MPMD)', image: ig('derek_fit'), url: 'https://instagram.com/derek_fit' },
+      { id: 'larry-wheels', name: '@larrywheels', image: ig('larrywheels'), url: 'https://instagram.com/larrywheels' },
+      { id: 'mike-ohearn', name: '@mikeohearn', image: ig('mikeohearn'), url: 'https://instagram.com/mikeohearn' },
+      { id: 'ryan-humiston', name: '@ryanhumiston', image: ig('ryanhumiston'), url: 'https://instagram.com/ryanhumiston' },
+      // Female fitness
+      { id: 'whitney-simmons', name: '@whitneyysimmons', image: ig('whitneyysimmons'), url: 'https://instagram.com/whitneyysimmons' },
+      { id: 'krissy-cela', name: '@krissycela', image: ig('krissycela'), url: 'https://instagram.com/krissycela' },
+      { id: 'stephanie-buttermore', name: '@stephanie_buttermore', image: ig('stephanie_buttermore'), url: 'https://instagram.com/stephanie_buttermore' },
+      { id: 'natacha-oceane', name: '@natacha.oceane', image: ig('natacha.oceane'), url: 'https://instagram.com/natacha.oceane' },
+      { id: 'robin-gallant', name: '@robingallant', image: ig('robingallant'), url: 'https://instagram.com/robingallant' },
+      // Science / coaching
+      { id: 'mike-israetel', name: '@rpstrength (Mike Israetel)', image: ig('rpstrength'), url: 'https://instagram.com/rpstrength' },
+      { id: 'layne-norton', name: '@biolayne (Layne Norton)', image: ig('biolayne'), url: 'https://instagram.com/biolayne' },
+      { id: 'eugene-teo', name: '@eugeeneteo', image: ig('eugeeneteo'), url: 'https://instagram.com/eugeeneteo' },
+      { id: 'john-meadows', name: '@mountaindog1 (John Meadows)', image: ig('mountaindog1'), url: 'https://instagram.com/mountaindog1' },
+      { id: 'athlean-x', name: '@ataboresi (Jeff Cavaliere)', image: ig('athleanx'), url: 'https://instagram.com/athleanx' },
     ]
   },
   'workout-anthems': {
