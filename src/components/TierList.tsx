@@ -15,7 +15,7 @@ import { BASE_PATH } from '@/lib/config';
 import { EmailGate } from './EmailGate';
 
 export function TierList() {
-  const [currentPreset, setCurrentPreset] = useState('blank');
+  const [activePresets, setActivePresets] = useState<Set<string>>(new Set());
   const [tiers, setTiers] = useState<TierData>({
     SS: [], S: [], 'A+': [], A: [], 'B+': [], B: [], C: [], unranked: []
   });
@@ -30,29 +30,53 @@ export function TierList() {
     saveToLocalStorage(tiers);
   }, [tiers]);
 
-  const loadPreset = useCallback((presetKey: string) => {
-    const preset = PRESETS[presetKey];
-    if (!preset) return;
+  // Get all product IDs currently in any tier
+  const allCurrentIds = useCallback(() => {
+    const ids = new Set<string>();
+    Object.values(tiers).forEach(products => {
+      products.forEach(p => ids.add(p.id));
+    });
+    return ids;
+  }, [tiers]);
 
-    const newTiers: TierData = {
-      SS: [], S: [], 'A+': [], A: [], 'B+': [], B: [], C: [],
-      unranked: [...preset.products]
-    };
+  const handleTogglePreset = useCallback((presetKey: string) => {
+    setActivePresets(prev => {
+      const next = new Set(prev);
+      const preset = PRESETS[presetKey];
+      if (!preset) return next;
 
-    if (preset.tierPositions) {
-      Object.entries(preset.tierPositions).forEach(([tierKey, products]) => {
-        if (products && Array.isArray(products)) {
-          newTiers[tierKey as TierKey] = [...products];
-          products.forEach(product => {
-            const index = newTiers.unranked.findIndex(p => p.id === product.id);
-            if (index !== -1) newTiers.unranked.splice(index, 1);
+      if (next.has(presetKey)) {
+        // Remove: delete this preset's products from all tiers
+        next.delete(presetKey);
+        const presetIds = new Set(preset.products.map(p => p.id));
+        setTiers(prev => {
+          const newTiers = { ...prev };
+          (Object.keys(newTiers) as TierKey[]).forEach(key => {
+            newTiers[key] = prev[key].filter(p => !presetIds.has(p.id));
           });
-        }
-      });
-    }
+          // Also filter unranked
+          newTiers.unranked = prev.unranked.filter(p => !presetIds.has(p.id));
+          return newTiers;
+        });
+      } else {
+        // Add: merge this preset's products into unranked (skip dupes)
+        next.add(presetKey);
+        const currentIds = allCurrentIds();
+        const newProducts = preset.products.filter(p => !currentIds.has(p.id));
+        setTiers(prev => ({
+          ...prev,
+          unranked: [...prev.unranked, ...newProducts],
+        }));
+      }
+      return next;
+    });
+  }, [allCurrentIds]);
 
-    setTiers(newTiers);
-    setCurrentPreset(presetKey);
+  const handleClearAll = useCallback(() => {
+    setActivePresets(new Set());
+    setTiers({
+      SS: [], S: [], 'A+': [], A: [], 'B+': [], B: [], C: [], unranked: []
+    });
   }, []);
 
   const handleDragEnd = useCallback((result: DropResult) => {
@@ -197,7 +221,7 @@ export function TierList() {
 
         {/* Presets + Search row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
-          <PresetSelector currentPreset={currentPreset} onPresetChange={loadPreset} />
+          <PresetSelector activePresets={activePresets} onTogglePreset={handleTogglePreset} onClearAll={handleClearAll} />
           <AddProductForm onAddProduct={handleAddProduct} />
         </div>
 

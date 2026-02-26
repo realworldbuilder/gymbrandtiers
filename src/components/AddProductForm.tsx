@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { ScrapedProduct } from '@/types';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { Product, ScrapedProduct } from '@/types';
+import { PRESETS } from '@/lib/presets';
 
 interface BrandResult {
   name: string;
@@ -10,13 +11,23 @@ interface BrandResult {
   brandId: string;
 }
 
+interface SearchResult {
+  type: 'preset' | 'brand';
+  name: string;
+  image: string;
+  url: string;
+  category?: string;
+  domain?: string;
+  product?: Product;
+}
+
 interface AddProductFormProps {
   onAddProduct: (product: ScrapedProduct) => void;
 }
 
 export function AddProductForm({ onAddProduct }: AddProductFormProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<BrandResult[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -24,49 +35,92 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
 
-  const searchBrands = useCallback(async (q: string) => {
+  // Build a flat index of all preset items
+  const allPresetItems = useMemo(() => {
+    const items: (Product & { category: string })[] = [];
+    Object.entries(PRESETS).forEach(([key, preset]) => {
+      if (key === 'blank') return;
+      preset.products.forEach(p => items.push({ ...p, category: preset.name }));
+    });
+    return items;
+  }, []);
+
+  const search = useCallback(async (q: string) => {
     if (q.length < 1) {
       setResults([]);
       setIsOpen(false);
       return;
     }
 
+    const lower = q.toLowerCase();
+
+    // 1. Search preset items locally (instant)
+    const presetMatches: SearchResult[] = allPresetItems
+      .filter(p => p.name.toLowerCase().includes(lower))
+      .slice(0, 6)
+      .map(p => ({
+        type: 'preset' as const,
+        name: p.name,
+        image: p.image,
+        url: p.url,
+        category: p.category,
+        product: p,
+      }));
+
+    // Show preset results immediately
+    if (presetMatches.length > 0) {
+      setResults(presetMatches);
+      setIsOpen(true);
+      setSelectedIndex(-1);
+    }
+
+    // 2. Search Brandfetch API (async)
     setIsLoading(true);
     try {
       const res = await fetch(`/api/brand-search?q=${encodeURIComponent(q)}`);
+      if (res.ok) {
+        const data = await res.json();
+        const brandResults: SearchResult[] = (Array.isArray(data) ? data : [])
+          .slice(0, 6)
+          .map((b: BrandResult) => ({
+            type: 'brand' as const,
+            name: b.name,
+            image: b.icon,
+            url: `https://${b.domain}`,
+            domain: b.domain,
+          }));
 
-      if (!res.ok) {
-        setResults([]);
-        setIsOpen(false);
+        // Merge: presets first, then brands (dedupe by name)
+        const seen = new Set(presetMatches.map(r => r.name.toLowerCase()));
+        const merged = [
+          ...presetMatches,
+          ...brandResults.filter(b => !seen.has(b.name.toLowerCase())),
+        ].slice(0, 10);
+
+        setResults(merged);
+        setIsOpen(merged.length > 0);
         setSelectedIndex(-1);
-        return;
       }
-
-      const data = await res.json();
-      const mapped = (Array.isArray(data) ? data : []).slice(0, 8);
-      setResults(mapped);
-      setIsOpen(results.length > 0);
-      setSelectedIndex(-1);
     } catch {
-      setResults([]);
+      // Keep preset results if API fails
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [allPresetItems]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => searchBrands(value), 200);
+    debounceRef.current = setTimeout(() => search(value), 200);
   };
 
-  const selectBrand = (brand: BrandResult) => {
+  const selectResult = (result: SearchResult) => {
     onAddProduct({
-      name: brand.name,
-      image: brand.icon,
-      url: `https://${brand.domain}`,
+      name: result.name,
+      image: result.image,
+      url: result.url,
     });
     setQuery('');
     setResults([]);
@@ -85,7 +139,7 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
       setSelectedIndex(prev => Math.max(prev - 1, 0));
     } else if (e.key === 'Enter' && selectedIndex >= 0) {
       e.preventDefault();
-      selectBrand(results[selectedIndex]);
+      selectResult(results[selectedIndex]);
     } else if (e.key === 'Escape') {
       setIsOpen(false);
     }
@@ -115,7 +169,7 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onFocus={() => results.length > 0 && setIsOpen(true)}
-        placeholder="Add product... (e.g. gymshark)"
+        placeholder="Search anything... (brands, exercises, influencers)"
         className="w-full px-4 py-3 bg-surface border border-border text-text-primary font-mono text-sm placeholder-text-muted focus:outline-none focus:border-text-muted"
       />
       {isLoading && (
@@ -129,10 +183,10 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
           ref={dropdownRef}
           className="absolute top-full left-0 right-0 z-50 mt-0 bg-surface border border-border border-t-0 max-h-[320px] overflow-y-auto"
         >
-          {results.map((brand, index) => (
+          {results.map((result, index) => (
             <button
-              key={`${brand.brandId}-${index}`}
-              onClick={() => selectBrand(brand)}
+              key={`${result.type}-${result.name}-${index}`}
+              onClick={() => selectResult(result)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-left font-mono text-sm transition-colors ${
                 index === selectedIndex
                   ? 'bg-white/10 text-white'
@@ -141,15 +195,17 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={brand.icon}
-                alt={brand.name}
+                src={result.image}
+                alt={result.name}
                 className="w-6 h-6 object-contain bg-white rounded-sm"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = `https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64`;
+                  (e.target as HTMLImageElement).style.display = 'none';
                 }}
               />
-              <span className="truncate">{brand.name}</span>
-              <span className="text-text-muted text-xs ml-auto">{brand.domain}</span>
+              <span className="truncate">{result.name}</span>
+              <span className="text-text-muted text-xs ml-auto">
+                {result.type === 'preset' ? result.category : result.domain}
+              </span>
             </button>
           ))}
         </div>
