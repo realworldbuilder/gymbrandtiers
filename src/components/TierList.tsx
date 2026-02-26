@@ -11,6 +11,7 @@ import { TierRow } from './TierRow';
 import { ProductItem } from './ProductItem';
 import { AddProductForm } from './AddProductForm';
 import { PresetSelector } from './PresetSelector';
+import { EmailGate } from './EmailGate';
 
 export function TierList() {
   const [currentPreset, setCurrentPreset] = useState('blank');
@@ -251,6 +252,11 @@ export function TierList() {
             ))}
           </div>
         </DragDropContext>
+
+        {/* Email Collection */}
+        <div className="mt-8">
+          <EmailGate />
+        </div>
       </div>
     </div>
   );

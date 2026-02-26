@@ -33,10 +33,33 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/brand-search?q=${encodeURIComponent(q)}`);
+      // Call Brandfetch API directly from client-side
+      const res = await fetch(`https://api.brandfetch.io/v2/search/${encodeURIComponent(q)}`, {
+        headers: {
+          'Authorization': `Bearer Yd83VKTqp7BsUI6Wo3YXImTbzo76R2l7JFAdK7Fc-Bls-OgMMyEFH559R9JHaAwCtgMzmFSNyxgDXLqpynD0cg`,
+        },
+      });
+
+      if (!res.ok) {
+        setResults([]);
+        setIsOpen(false);
+        setSelectedIndex(-1);
+        return;
+      }
+
       const data = await res.json();
-      setResults(data);
-      setIsOpen(data.length > 0);
+
+      // Map to simplified format, take top 8 results
+      const results = (Array.isArray(data) ? data : []).slice(0, 8).map((item: Record<string, unknown>) => ({
+        name: item.name as string,
+        domain: item.domain as string,
+        // Use higher quality icon format
+        icon: `https://cdn.brandfetch.io/${item.brandId}/w/400/h/400/theme/dark/icon.jpeg`,
+        brandId: item.brandId as string,
+      }));
+
+      setResults(results);
+      setIsOpen(results.length > 0);
       setSelectedIndex(-1);
     } catch {
       setResults([]);

@@ -3,6 +3,24 @@ import { PresetData } from '@/types';
 const bf = (brandId: string) =>
   `https://cdn.brandfetch.io/${brandId}/w/400/h/400/theme/dark/icon.jpeg`;
 
+// Helper function to create initials-based SVG data URI for non-brand items
+const initials = (name: string, color: string) => {
+  const words = name.split(' ');
+  const initialsText = words.length === 1 
+    ? name.charAt(0) 
+    : words.map(word => word.charAt(0)).join('').substring(0, 2);
+  
+  return `data:image/svg+xml,${encodeURIComponent(`
+    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="200" fill="${color}"/>
+      <text x="200" y="200" text-anchor="middle" dominant-baseline="central" 
+            fill="white" font-family="monospace" font-size="120" font-weight="bold">
+        ${initialsText.toUpperCase()}
+      </text>
+    </svg>
+  `)}`; 
+};
+
 export const PRESETS: Record<string, PresetData> = {
   'gym-apparel': {
     name: 'Gym Apparel',
@@ -78,6 +96,106 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'strava', name: 'Strava', image: bf('idTLzKLmej'), url: 'https://strava.com' },
       { id: 'setgraph', name: 'Setgraph', image: bf('id_WMHZ6eh'), url: 'https://setgraph.app' },
       { id: 'gymgod', name: 'GYMGOD', image: bf('idVs2QeIHO'), url: 'https://thegymgod.com' },
+    ]
+  },
+  'energy-drinks': {
+    name: 'Energy Drinks',
+    products: [
+      { id: 'celsius', name: 'CELSIUS', image: bf('id_cHpgHRY'), url: 'https://celsius.com' },
+      { id: 'ghost-energy', name: 'Ghost Energy', image: bf('id6WaNlAJ8'), url: 'https://ghostenergy.com' },
+      { id: 'monster', name: 'Monster Energy', image: bf('idP9xmAmAE'), url: 'https://monsterenergy.com' },
+      { id: 'reign', name: 'Reign', image: bf('idxb_BFoZV'), url: 'https://reignbodyfuel.com' },
+      { id: 'bang-energy', name: 'Bang Energy', image: bf('idajDf8Veg'), url: 'https://bang-energy.com' },
+      { id: 'alani-nu-energy', name: 'Alani Nu Energy', image: bf('idlkk5tKea'), url: 'https://alaninu.com' },
+      { id: '3d-energy', name: '3D Energy', image: bf('idm3yF9R8L'), url: 'https://3denergy.com' },
+      { id: 'zoa-energy', name: 'ZOA Energy', image: bf('id8q6KU6ww'), url: 'https://zoaenergy.com' },
+      { id: 'prime-energy', name: 'Prime', image: bf('id6nUiBnxC'), url: 'https://drinkprime.com' },
+      { id: 'c4-energy', name: 'C4 Energy', image: bf('idO0FO3NCo'), url: 'https://cellucor.com' },
+      { id: 'rockstar', name: 'Rockstar', image: bf('idF3F5DCTQ'), url: 'https://rockstarenergy.com' },
+      { id: 'red-bull', name: 'Red Bull', image: bf('idsxwZAJOC'), url: 'https://redbull.com' },
+      { id: 'ghost-brand', name: 'GHOST', image: bf('id6WaNlAJ8'), url: 'https://ghostlifestyle.com' },
+      { id: 'bucked-up-energy', name: 'Bucked Up Energy', image: bf('id6itHK-SF'), url: 'https://buckedup.com' },
+      { id: 'kill-cliff', name: 'Kill Cliff', image: bf('idcKdQX-x6'), url: 'https://killcliff.com' },
+    ]
+  },
+  'protein-bars': {
+    name: 'Protein Bars',
+    products: [
+      { id: 'quest', name: 'Quest', image: bf('idXGKYGvTJ'), url: 'https://questnutrition.com' },
+      { id: 'barebells', name: 'Barebells', image: bf('idOdELn1Z8'), url: 'https://barebells.com' },
+      { id: 'built-bar', name: 'Built Bar', image: bf('idJo5tkkZz'), url: 'https://builtbar.com' },
+      { id: 'rxbar', name: 'RXBar', image: bf('id3xGQKVJh'), url: 'https://rxbar.com' },
+      { id: 'one-bar', name: 'ONE Bar', image: bf('idfXWKZFN7'), url: 'https://onebar.com' },
+      { id: 'fulfil', name: 'Fulfil', image: bf('idEySw6GGF'), url: 'https://fulfil.com' },
+      { id: 'perfect-bar', name: 'Perfect Bar', image: bf('idCxwBHW4t'), url: 'https://perfectbar.com' },
+      { id: 'kind', name: 'KIND', image: bf('idMgHk0mz7'), url: 'https://kindsnacks.com' },
+      { id: 'clif-bar', name: 'Clif Bar', image: bf('id_QoOC8HE'), url: 'https://clifbar.com' },
+      { id: 'think', name: 'Think!', image: bf('idOpwzLj4g'), url: 'https://thinkproducts.com' },
+      { id: 'pure-protein', name: 'Pure Protein', image: bf('idWGJ0A3lW'), url: 'https://pureprotein.com' },
+      { id: 'fitcrunch', name: 'Robert Irvine FitCrunch', image: bf('idV0VdoXk4'), url: 'https://fitcrunch.com' },
+      { id: 'grenade', name: 'Grenade', image: bf('id9CgTKr8T'), url: 'https://grenade.com' },
+      { id: 'musclePharm-combat', name: 'MusclePharm Combat', image: bf('id9zYYSBF8'), url: 'https://musclepharm.com' },
+      { id: 'powerbar', name: 'PowerBar', image: bf('idquBnpJYJ'), url: 'https://powerbar.com' },
+    ]
+  },
+  'gym-influencers': {
+    name: 'Gym Influencers',
+    products: [
+      { id: 'chris-bumstead', name: 'Chris Bumstead (CBum)', image: initials('Chris Bumstead', '#e74c3c'), url: 'https://instagram.com/cbum' },
+      { id: 'sam-sulek', name: 'Sam Sulek', image: initials('Sam Sulek', '#e67e22'), url: 'https://instagram.com/sam_sulek' },
+      { id: 'noel-deyzel', name: 'Noel Deyzel', image: initials('Noel Deyzel', '#f1c40f'), url: 'https://instagram.com/noeldeyzel_' },
+      { id: 'jeff-nippard', name: 'Jeff Nippard', image: initials('Jeff Nippard', '#2ecc71'), url: 'https://jeffnippard.com' },
+      { id: 'greg-doucette', name: 'Greg Doucette', image: initials('Greg Doucette', '#3498db'), url: 'https://gregdoucette.com' },
+      { id: 'will-tennyson', name: 'Will Tennyson', image: initials('Will Tennyson', '#9b59b6'), url: 'https://instagram.com/willtenny' },
+      { id: 'jesse-james-west', name: 'Jesse James West', image: initials('Jesse James West', '#1abc9c'), url: 'https://instagram.com/jessejameswest' },
+      { id: 'alex-eubank', name: 'Alex Eubank', image: initials('Alex Eubank', '#e84393'), url: 'https://instagram.com/alexeubank' },
+      { id: 'david-laid', name: 'David Laid', image: initials('David Laid', '#e74c3c'), url: 'https://instagram.com/davidlaid' },
+      { id: 'lexx-little', name: 'Lexx Little', image: initials('Lexx Little', '#e67e22'), url: 'https://instagram.com/lexx_little' },
+      { id: 'nick-walker', name: 'Nick Walker', image: initials('Nick Walker', '#f1c40f'), url: 'https://instagram.com/nick_walker39' },
+      { id: 'derek-mpmd', name: 'Derek (MPMD)', image: initials('Derek MPMD', '#2ecc71'), url: 'https://moreplatesmoredates.com' },
+      { id: 'stephanie-buttermore', name: 'Stephanie Buttermore', image: initials('Stephanie Buttermore', '#3498db'), url: 'https://instagram.com/stephanie_buttermore' },
+      { id: 'whitney-simmons', name: 'Whitney Simmons', image: initials('Whitney Simmons', '#9b59b6'), url: 'https://instagram.com/whitneyysimmons' },
+      { id: 'krissy-cela', name: 'Krissy Cela', image: initials('Krissy Cela', '#1abc9c'), url: 'https://instagram.com/krissycela' },
+    ]
+  },
+  'workout-anthems': {
+    name: 'Workout Anthems',
+    products: [
+      { id: 'till-i-collapse', name: '"Till I Collapse" - Eminem', image: initials('Till I Collapse', '#8e44ad'), url: 'https://open.spotify.com/track/4xkOaSrkexMciUUogZKVTS' },
+      { id: 'cant-hold-us', name: '"Can\'t Hold Us" - Macklemore', image: initials('Can\'t Hold Us', '#2980b9'), url: 'https://open.spotify.com/track/0lYBSQXN6rCTvUZvg9S0lU' },
+      { id: 'lose-yourself', name: '"Lose Yourself" - Eminem', image: initials('Lose Yourself', '#c0392b'), url: 'https://open.spotify.com/track/5Z01UMMf7V1o0MzF86s6WJ' },
+      { id: 'x-gon-give-it', name: '"X Gon Give It To Ya" - DMX', image: initials('X Gon Give It To Ya', '#d35400'), url: 'https://open.spotify.com/track/6CHHf4KgrKyeAVD1eXKU7O' },
+      { id: 'remember-the-name', name: '"Remember The Name" - Fort Minor', image: initials('Remember The Name', '#f39c12'), url: 'https://open.spotify.com/track/7LVHVU3tWfcxj5aiPFEW4T' },
+      { id: 'stronger-kanye', name: '"Stronger" - Kanye', image: initials('Stronger', '#27ae60'), url: 'https://open.spotify.com/track/7dW84Ed25GUmlRwSgppWEQ' },
+      { id: 'eye-of-the-tiger', name: '"Eye of the Tiger" - Survivor', image: initials('Eye of the Tiger', '#8e44ad'), url: 'https://open.spotify.com/track/7GO6LkoYJlzmOW1bOswGgD' },
+      { id: 'thunderstruck', name: '"Thunderstruck" - AC/DC', image: initials('Thunderstruck', '#2980b9'), url: 'https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj' },
+      { id: 'enter-sandman', name: '"Enter Sandman" - Metallica', image: initials('Enter Sandman', '#c0392b'), url: 'https://open.spotify.com/track/5sICkBXVmaCQk5aISGR3x1' },
+      { id: 'bodies', name: '"Bodies" - Drowning Pool', image: initials('Bodies', '#d35400'), url: 'https://open.spotify.com/track/3FRfLg5kSlgQIkEPwaMQgR' },
+      { id: 'power-kanye', name: '"Power" - Kanye', image: initials('Power', '#f39c12'), url: 'https://open.spotify.com/track/LE0Anh20Xmx3kUGOcHkLpb' },
+      { id: 'humble-kendrick', name: '"Humble" - Kendrick', image: initials('Humble', '#27ae60'), url: 'https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS' },
+      { id: 'dna-kendrick', name: '"DNA" - Kendrick', image: initials('DNA', '#8e44ad'), url: 'https://open.spotify.com/track/6HZILIRieu8S0iqY8kIKhj' },
+      { id: 'background-carti', name: '"BACKGROUND" - Playboy Carti', image: initials('BACKGROUND', '#2980b9'), url: 'https://open.spotify.com/track/4xbS5CLzI6MhOhHTKLRgGl' },
+      { id: 'blinding-lights', name: '"Blinding Lights" - The Weeknd', image: initials('Blinding Lights', '#c0392b'), url: 'https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b' },
+    ]
+  },
+  'gym-shoes': {
+    name: 'Gym Shoes',
+    products: [
+      { id: 'nike-metcon', name: 'Nike Metcon', image: bf('id_0dwKPKT'), url: 'https://nike.com' },
+      { id: 'converse-chuck', name: 'Converse Chuck Taylor', image: bf('idJgSi3UR3'), url: 'https://converse.com' },
+      { id: 'adidas-adipower', name: 'adidas Adipower', image: bf('idyqQWKFVE'), url: 'https://adidas.com' },
+      { id: 'reebok-nano', name: 'Reebok Nano', image: bf('idtCaUJ9DG'), url: 'https://reebok.com' },
+      { id: 'nike-romaleos', name: 'Nike Romaleos', image: bf('id_0dwKPKT'), url: 'https://nike.com' },
+      { id: 'nobull-trainer', name: 'NOBULL Trainer', image: bf('idzM66VVpw'), url: 'https://nobullproject.com' },
+      { id: 'nb-minimus', name: 'New Balance Minimus', image: bf('idxNbHiUYY'), url: 'https://newbalance.com' },
+      { id: 'vans-old-skool', name: 'Vans Old Skool', image: bf('id1YJCLm27'), url: 'https://vans.com' },
+      { id: 'vivobarefoot', name: 'Vivobarefoot', image: bf('idOhJD9MrI'), url: 'https://vivobarefoot.com' },
+      { id: 'inov8', name: 'Inov-8', image: bf('idD_eLu4Y2'), url: 'https://inov-8.com' },
+      { id: 'ua-tribase', name: 'Under Armour TriBase', image: bf('idu8xi0DFE'), url: 'https://underarmour.com' },
+      { id: 'puma-fuse', name: 'Puma Fuse', image: bf('idDV9AjI6R'), url: 'https://puma.com' },
+      { id: 'tyr', name: 'TYR', image: bf('idVWJqZGd8'), url: 'https://tyr.com' },
+      { id: 'hylete', name: 'Hylete', image: bf('id3aI8P8iB'), url: 'https://hylete.com' },
+      { id: 'xero-shoes', name: 'Xero Shoes', image: bf('idD7E_JrDw'), url: 'https://xeroshoes.com' },
     ]
   },
   'blank': {
