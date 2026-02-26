@@ -161,7 +161,7 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
   }, []);
 
   return (
-    <div className="relative flex-1 max-w-lg">
+    <div className="relative w-full">
       <input
         ref={inputRef}
         type="text"

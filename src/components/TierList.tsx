@@ -219,10 +219,14 @@ export function TierList() {
           </button>
         </div>
 
-        {/* Presets + Search row */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
-          <PresetSelector activePresets={activePresets} onTogglePreset={handleTogglePreset} onClearAll={handleClearAll} />
+        {/* Search - full width */}
+        <div className="mb-3">
           <AddProductForm onAddProduct={handleAddProduct} />
+        </div>
+
+        {/* Category toggles */}
+        <div className="mb-3">
+          <PresetSelector activePresets={activePresets} onTogglePreset={handleTogglePreset} onClearAll={handleClearAll} />
         </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
