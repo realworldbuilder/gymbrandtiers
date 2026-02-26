@@ -16,25 +16,20 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'buffbunny', name: 'Buffbunny', image: bf('idn6F4ZDsM'), url: 'https://buffbunny.com' },
       { id: 'lululemon', name: 'lululemon', image: bf('idPjBRPVWS'), url: 'https://lululemon.com' },
       { id: 'vuori', name: 'Vuori', image: bf('idCoBHZ2C0'), url: 'https://vuoriclothing.com' },
+      { id: 'nike', name: 'Nike', image: bf('id_0dwKPKT'), url: 'https://nike.com' },
       { id: 'dfyne', name: 'DFYNE', image: bf('idtjLp_VYk'), url: 'https://dfyne.com' },
-    ]
-  },
-  'fitness-apps': {
-    name: 'Fitness Apps',
-    products: [
-      { id: 'hevy', name: 'Hevy', image: bf('idfZFb9cZa'), url: 'https://hevyapp.com' },
-      { id: 'jefit', name: 'Jefit', image: bf('id3a8cyHAM'), url: 'https://jefit.com' },
-      { id: 'myfitnesspal', name: 'MyFitnessPal', image: bf('id__ZAzBVM'), url: 'https://myfitnesspal.com' },
-      { id: 'strava', name: 'Strava', image: bf('idTLzKLmej'), url: 'https://strava.com' },
-      { id: 'setgraph', name: 'Setgraph', image: bf('id_WMHZ6eh'), url: 'https://setgraph.app' },
-      { id: 'gymgod', name: 'GYMGOD', image: bf('idVs2QeIHO'), url: 'https://thegymgod.com' },
-      { id: 'nike-training', name: 'Nike', image: bf('id_0dwKPKT'), url: 'https://nike.com' },
       { id: 'fabletics', name: 'Fabletics', image: bf('idwYE-y42K'), url: 'https://fabletics.com' },
       { id: 'alo-yoga', name: 'Alo Yoga', image: bf('ide6WhLtKC'), url: 'https://aloyoga.com' },
       { id: 'nobull', name: 'NOBULL', image: bf('idzM66VVpw'), url: 'https://nobullproject.com' },
+      { id: 'under-armour', name: 'Under Armour', image: bf('idu8xi0DFE'), url: 'https://underarmour.com' },
+      { id: 'set-active', name: 'SET ACTIVE', image: bf('id_alz5gL_'), url: 'https://setactive.com' },
+      { id: 'ptula', name: 'PTULA', image: bf('idySlY1sRS'), url: 'https://ptula.com' },
+      { id: 'botee', name: 'Bo+Tee', image: bf('idlntvk1il'), url: 'https://boandtee.com' },
+      { id: 'puma', name: 'PUMA', image: bf('idDV9AjI6R'), url: 'https://puma.com' },
+      { id: 'adidas', name: 'adidas', image: bf('idyqQWKFVE'), url: 'https://adidas.com' },
     ]
   },
-  'pre-workouts': {
+  'supplements': {
     name: 'Supplements',
     products: [
       { id: 'gorilla-mode', name: 'Gorilla Mind', image: bf('idOUW3W0RF'), url: 'https://gorillamind.com' },
@@ -47,6 +42,16 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'bloom', name: 'Bloom Nutrition', image: bf('idZJgxJOSV'), url: 'https://bloomnu.com' },
       { id: 'alani-nu', name: 'Alani Nu', image: bf('idlkk5tKea'), url: 'https://alaninu.com' },
       { id: '1st-phorm', name: '1st Phorm', image: bf('idaER50trU'), url: 'https://1stphorm.com' },
+      { id: 'celsius', name: 'CELSIUS', image: bf('id_cHpgHRY'), url: 'https://celsius.com' },
+      { id: 'myprotein', name: 'Myprotein', image: bf('id9V60az2k'), url: 'https://myprotein.com' },
+      { id: 'optimum-nutrition', name: 'Optimum Nutrition', image: bf('idYBgD5cKw'), url: 'https://optimumnutrition.com' },
+      { id: 'muscletech', name: 'MuscleTech', image: bf('idBkPP8ZCu'), url: 'https://muscletech.com' },
+      { id: 'dymatize', name: 'Dymatize', image: bf('idVsYyiqH-'), url: 'https://dymatize.com' },
+      { id: 'huge-supplements', name: 'Huge Supplements', image: bf('idZiqeYggz'), url: 'https://hugesupplements.com' },
+      { id: 'jacked-factory', name: 'Jacked Factory', image: bf('idZs3GOBnp'), url: 'https://jackedfactory.com' },
+      { id: 'morphogen', name: 'Morphogen', image: bf('idmrhPG7EI'), url: 'https://morphogennutrition.com' },
+      { id: 'muscle-milk', name: 'Muscle Milk', image: bf('idxegzBjAW'), url: 'https://musclemilk.com' },
+      { id: 'rule-one', name: 'Rule One', image: bf('idufz-Dt0p'), url: 'https://ruleoneproteins.com' },
     ]
   },
   'gym-chains': {
@@ -62,6 +67,17 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'crossfit', name: 'CrossFit', image: bf('idBwNUsVWB'), url: 'https://crossfit.com' },
       { id: 'f45', name: 'F45 Training', image: bf('idLWyl6tyb'), url: 'https://f45training.com' },
       { id: 'barrys', name: "Barry's", image: bf('id2KqtxxKv'), url: 'https://barrysbootcamp.com' },
+    ]
+  },
+  'fitness-apps': {
+    name: 'Apps',
+    products: [
+      { id: 'hevy', name: 'Hevy', image: bf('idfZFb9cZa'), url: 'https://hevyapp.com' },
+      { id: 'jefit', name: 'Jefit', image: bf('id3a8cyHAM'), url: 'https://jefit.com' },
+      { id: 'myfitnesspal', name: 'MyFitnessPal', image: bf('id__ZAzBVM'), url: 'https://myfitnesspal.com' },
+      { id: 'strava', name: 'Strava', image: bf('idTLzKLmej'), url: 'https://strava.com' },
+      { id: 'setgraph', name: 'Setgraph', image: bf('id_WMHZ6eh'), url: 'https://setgraph.app' },
+      { id: 'gymgod', name: 'GYMGOD', image: bf('idVs2QeIHO'), url: 'https://thegymgod.com' },
     ]
   },
   'blank': {
