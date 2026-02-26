@@ -43,17 +43,8 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
       }
 
       const data = await res.json();
-
-      // Map to simplified format, take top 8 results
-      const results = (Array.isArray(data) ? data : []).slice(0, 8).map((item: Record<string, unknown>) => ({
-        name: item.name as string,
-        domain: item.domain as string,
-        // Use higher quality icon format
-        icon: `https://cdn.brandfetch.io/${item.brandId}/w/400/h/400/theme/dark/icon.jpeg`,
-        brandId: item.brandId as string,
-      }));
-
-      setResults(results);
+      const mapped = (Array.isArray(data) ? data : []).slice(0, 8);
+      setResults(mapped);
       setIsOpen(results.length > 0);
       setSelectedIndex(-1);
     } catch {

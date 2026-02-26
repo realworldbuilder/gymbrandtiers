@@ -172,26 +172,6 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'john-meadows', name: '@mountaindog1 (John Meadows)', image: pfp('mountaindog1'), url: 'https://instagram.com/mountaindog1' },
     ]
   },
-  'workout-anthems': {
-    name: 'Workout Anthems',
-    products: [
-      { id: 'till-i-collapse', name: '"Till I Collapse" - Eminem', image: initials('Till I Collapse', '#8e44ad'), url: 'https://open.spotify.com/track/4xkOaSrkexMciUUogZKVTS' },
-      { id: 'cant-hold-us', name: '"Can\'t Hold Us" - Macklemore', image: initials('Can\'t Hold Us', '#2980b9'), url: 'https://open.spotify.com/track/0lYBSQXN6rCTvUZvg9S0lU' },
-      { id: 'lose-yourself', name: '"Lose Yourself" - Eminem', image: initials('Lose Yourself', '#c0392b'), url: 'https://open.spotify.com/track/5Z01UMMf7V1o0MzF86s6WJ' },
-      { id: 'x-gon-give-it', name: '"X Gon Give It To Ya" - DMX', image: initials('X Gon Give It To Ya', '#d35400'), url: 'https://open.spotify.com/track/6CHHf4KgrKyeAVD1eXKU7O' },
-      { id: 'remember-the-name', name: '"Remember The Name" - Fort Minor', image: initials('Remember The Name', '#f39c12'), url: 'https://open.spotify.com/track/7LVHVU3tWfcxj5aiPFEW4T' },
-      { id: 'stronger-kanye', name: '"Stronger" - Kanye', image: initials('Stronger', '#27ae60'), url: 'https://open.spotify.com/track/7dW84Ed25GUmlRwSgppWEQ' },
-      { id: 'eye-of-the-tiger', name: '"Eye of the Tiger" - Survivor', image: initials('Eye of the Tiger', '#8e44ad'), url: 'https://open.spotify.com/track/7GO6LkoYJlzmOW1bOswGgD' },
-      { id: 'thunderstruck', name: '"Thunderstruck" - AC/DC', image: initials('Thunderstruck', '#2980b9'), url: 'https://open.spotify.com/track/57bgtoPSgt236HzfBOd8kj' },
-      { id: 'enter-sandman', name: '"Enter Sandman" - Metallica', image: initials('Enter Sandman', '#c0392b'), url: 'https://open.spotify.com/track/5sICkBXVmaCQk5aISGR3x1' },
-      { id: 'bodies', name: '"Bodies" - Drowning Pool', image: initials('Bodies', '#d35400'), url: 'https://open.spotify.com/track/3FRfLg5kSlgQIkEPwaMQgR' },
-      { id: 'power-kanye', name: '"Power" - Kanye', image: initials('Power', '#f39c12'), url: 'https://open.spotify.com/track/LE0Anh20Xmx3kUGOcHkLpb' },
-      { id: 'humble-kendrick', name: '"Humble" - Kendrick', image: initials('Humble', '#27ae60'), url: 'https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS' },
-      { id: 'dna-kendrick', name: '"DNA" - Kendrick', image: initials('DNA', '#8e44ad'), url: 'https://open.spotify.com/track/6HZILIRieu8S0iqY8kIKhj' },
-      { id: 'background-carti', name: '"BACKGROUND" - Playboy Carti', image: initials('BACKGROUND', '#2980b9'), url: 'https://open.spotify.com/track/4xbS5CLzI6MhOhHTKLRgGl' },
-      { id: 'blinding-lights', name: '"Blinding Lights" - The Weeknd', image: initials('Blinding Lights', '#c0392b'), url: 'https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b' },
-    ]
-  },
   'gym-shoes': {
     name: 'Gym Shoes',
     products: [
