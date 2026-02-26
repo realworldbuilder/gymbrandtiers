@@ -8,6 +8,10 @@ const bf = (brandId: string) =>
 const pfp = (handle: string) =>
   `${BASE_PATH}/influencers/${handle}.jpg`;
 
+// Exercise illustration from /public/exercises/
+const ex = (id: string) =>
+  `${BASE_PATH}/exercises/${id}.png`;
+
 // Helper function to create initials-based SVG data URI for non-brand items
 const initials = (name: string, color: string) => {
   const words = name.split(' ');
@@ -195,42 +199,40 @@ export const PRESETS: Record<string, PresetData> = {
   'exercises': {
     name: 'Exercises',
     products: [
-      // Chest (red)
-      { id: 'bench-press', name: 'Bench Press', image: initials('BP', '#e74c3c'), url: 'https://training.fit/exercise/benchpress/' },
-      { id: 'incline-bench', name: 'Incline Bench Press', image: initials('IB', '#e74c3c'), url: 'https://training.fit/exercise/incline-bench-press/' },
-      { id: 'cable-fly', name: 'Cable Fly', image: initials('CF', '#e74c3c'), url: 'https://training.fit/exercise/cable-chest-fly/' },
-      { id: 'dips', name: 'Dips', image: initials('DI', '#e74c3c'), url: 'https://training.fit/exercise/dips/' },
-      { id: 'chest-press', name: 'Chest Press Machine', image: initials('CP', '#e74c3c'), url: 'https://training.fit/exercise/chest-press/' },
-      // Back (blue)
-      { id: 'deadlift', name: 'Deadlift', image: initials('DL', '#3498db'), url: 'https://training.fit/exercise/deadlift/' },
-      { id: 'barbell-row', name: 'Barbell Row', image: initials('BR', '#3498db'), url: 'https://training.fit/exercise/barbell-row/' },
-      { id: 'lat-pulldown', name: 'Lat Pulldown', image: initials('LP', '#3498db'), url: 'https://training.fit/exercise/cable-lat-pulldown/' },
-      { id: 'cable-row', name: 'Cable Row', image: initials('CR', '#3498db'), url: 'https://training.fit/exercise/cable-row/' },
-      { id: 'pull-ups', name: 'Pull-Ups', image: initials('PU', '#3498db'), url: 'https://training.fit/exercise/pull-ups/' },
-      // Shoulders (orange)
-      { id: 'ohp', name: 'Overhead Press', image: initials('OP', '#e67e22'), url: 'https://training.fit/exercise/overhead-press/' },
-      { id: 'lateral-raise', name: 'Lateral Raise', image: initials('LR', '#e67e22'), url: 'https://training.fit/exercise/lateral-raise/' },
-      { id: 'face-pull', name: 'Face Pull', image: initials('FP', '#e67e22'), url: 'https://training.fit/exercise/face-pull/' },
-      { id: 'arnold-press', name: 'Arnold Press', image: initials('AP', '#e67e22'), url: 'https://training.fit/exercise/arnold-press/' },
-      { id: 'reverse-fly', name: 'Reverse Fly', image: initials('RF', '#e67e22'), url: 'https://training.fit/exercise/band-reverse-fly/' },
-      // Legs (green)
-      { id: 'squat', name: 'Barbell Squat', image: initials('SQ', '#2ecc71'), url: 'https://training.fit/exercise/barbell-squats/' },
-      { id: 'leg-press', name: 'Leg Press', image: initials('LP', '#2ecc71'), url: 'https://training.fit/exercise/leg-press/' },
-      { id: 'rdl', name: 'Romanian Deadlift', image: initials('RD', '#2ecc71'), url: 'https://training.fit/exercise/romanian-deadlift/' },
-      { id: 'lunges', name: 'Lunges', image: initials('LU', '#2ecc71'), url: 'https://training.fit/exercise/barbell-lunges/' },
-      { id: 'leg-curl', name: 'Leg Curl', image: initials('LC', '#2ecc71'), url: 'https://training.fit/exercise/leg-curl/' },
-      { id: 'leg-extension', name: 'Leg Extension', image: initials('LE', '#2ecc71'), url: 'https://training.fit/exercise/leg-extension/' },
-      { id: 'hip-thrust', name: 'Hip Thrust', image: initials('HT', '#2ecc71'), url: 'https://training.fit/exercise/hip-thrust/' },
-      { id: 'calf-raises', name: 'Calf Raises', image: initials('CA', '#2ecc71'), url: 'https://training.fit/exercise/calf-raises/' },
-      // Arms (purple)
-      { id: 'barbell-curl', name: 'Barbell Curl', image: initials('BC', '#9b59b6'), url: 'https://training.fit/exercise/barbell-curls/' },
-      { id: 'hammer-curl', name: 'Hammer Curl', image: initials('HC', '#9b59b6'), url: 'https://training.fit/exercise/hammer-curls/' },
-      { id: 'tricep-pushdown', name: 'Tricep Pushdown', image: initials('TP', '#9b59b6'), url: 'https://training.fit/exercise/cable-tricep-pushdowns/' },
-      { id: 'skull-crusher', name: 'Skull Crusher', image: initials('SC', '#9b59b6'), url: 'https://training.fit/exercise/barbell-skull-crusher/' },
-      // Core (teal)
-      { id: 'hanging-leg-raise', name: 'Hanging Leg Raise', image: initials('HR', '#1abc9c'), url: 'https://training.fit/exercise/hanging-leg-raise/' },
-      { id: 'cable-crunch', name: 'Cable Crunch', image: initials('CC', '#1abc9c'), url: 'https://training.fit/exercise/cable-crunch/' },
-      { id: 'ab-wheel', name: 'Ab Wheel Rollout', image: initials('AW', '#1abc9c'), url: 'https://training.fit/exercise/ab-wheel-rollout/' },
+      // Chest
+      { id: 'bench-press', name: 'Bench Press', image: ex('bench-press'), url: 'https://training.fit/exercise/benchpress/' },
+      { id: 'incline-bench', name: 'Incline Bench Press', image: ex('incline-bench'), url: 'https://training.fit/exercise/incline-dumbbell-press/' },
+      { id: 'cable-fly', name: 'Cable Fly', image: ex('cable-fly'), url: 'https://training.fit/exercise/cable-chest-fly/' },
+      { id: 'dips', name: 'Dips', image: ex('dips'), url: 'https://training.fit/exercise/dips/' },
+      { id: 'chest-press', name: 'Chest Press Machine', image: ex('chest-press'), url: 'https://training.fit/exercise/chest-press/' },
+      // Back
+      { id: 'deadlift', name: 'Deadlift', image: ex('deadlift'), url: 'https://training.fit/exercise/deadlift/' },
+      { id: 'barbell-row', name: 'Barbell Row', image: ex('barbell-row'), url: 'https://training.fit/exercise/barbell-row/' },
+      { id: 'lat-pulldown', name: 'Lat Pulldown', image: ex('lat-pulldown'), url: 'https://training.fit/exercise/cable-lat-pulldown/' },
+      { id: 'cable-row', name: 'Cable Row', image: ex('cable-row'), url: 'https://training.fit/exercise/cable-row/' },
+      { id: 'pull-ups', name: 'Pull-Ups', image: ex('pull-ups'), url: 'https://training.fit/exercise/pull-ups/' },
+      // Shoulders
+      { id: 'ohp', name: 'Overhead Press', image: ex('ohp'), url: 'https://training.fit/exercise/dumbbell-shoulder-press/' },
+      { id: 'lateral-raise', name: 'Lateral Raise', image: ex('lateral-raise'), url: 'https://training.fit/exercise/lateral-raise/' },
+      { id: 'arnold-press', name: 'Arnold Press', image: ex('arnold-press'), url: 'https://training.fit/exercise/arnold-press/' },
+      { id: 'reverse-fly', name: 'Reverse Fly', image: ex('reverse-fly'), url: 'https://training.fit/exercise/band-reverse-fly/' },
+      // Legs
+      { id: 'squat', name: 'Barbell Squat', image: ex('squat'), url: 'https://training.fit/exercise/barbell-squats/' },
+      { id: 'hack-squat', name: 'Hack Squat', image: ex('hack-squat'), url: 'https://training.fit/exercise/hack-squat/' },
+      { id: 'rdl', name: 'Romanian Deadlift', image: ex('rdl'), url: 'https://training.fit/exercise/romanian-deadlift/' },
+      { id: 'lunges', name: 'Lunges', image: ex('lunges'), url: 'https://training.fit/exercise/barbell-lunges/' },
+      { id: 'leg-curl', name: 'Leg Curl', image: ex('leg-curl'), url: 'https://training.fit/exercise/lying-leg-curl/' },
+      { id: 'leg-extension', name: 'Leg Extension', image: ex('leg-extension'), url: 'https://training.fit/exercise/leg-extensions/' },
+      { id: 'calf-raises', name: 'Calf Raises', image: ex('calf-raises'), url: 'https://training.fit/exercise/calf-raises/' },
+      // Arms
+      { id: 'barbell-curl', name: 'Barbell Curl', image: ex('barbell-curl'), url: 'https://training.fit/exercise/barbell-curls/' },
+      { id: 'hammer-curl', name: 'Hammer Curl', image: ex('hammer-curl'), url: 'https://training.fit/exercise/hammer-curls/' },
+      { id: 'tricep-pushdown', name: 'Tricep Pushdown', image: ex('tricep-pushdown'), url: 'https://training.fit/exercise/cable-tricep-pushdowns/' },
+      { id: 'skull-crusher', name: 'Skull Crusher', image: ex('skull-crusher'), url: 'https://training.fit/exercise/barbell-skull-crusher/' },
+      // Core
+      { id: 'hanging-leg-raise', name: 'Hanging Leg Raise', image: ex('hanging-leg-raise'), url: 'https://training.fit/exercise/hanging-knee-raise/' },
+      { id: 'cable-crunch', name: 'Cable Crunch', image: ex('cable-crunch'), url: 'https://training.fit/exercise/cable-crunch/' },
+      { id: 'ab-wheel', name: 'Ab Wheel Rollout', image: ex('ab-wheel'), url: 'https://training.fit/exercise/ab-wheel-rollout/' },
     ]
   },
   'blank': {
