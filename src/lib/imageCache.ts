@@ -3,28 +3,57 @@ const cache = new Map<string, string>();
 
 export async function cacheImage(url: string): Promise<void> {
   if (cache.has(url)) return;
-  try {
-    const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(url));
-    if (!res.ok) throw new Error('proxy fail');
-    const blob = await res.blob();
-    const b64 = await blobToBase64(blob);
-    cache.set(url, b64);
-  } catch {
-    // Try direct fetch as fallback
+  
+  // Skip data URIs — already inline
+  if (url.startsWith('data:')) {
+    cache.set(url, url);
+    return;
+  }
+
+  const isExternal = url.startsWith('http://') || url.startsWith('https://');
+
+  // For local images, fetch directly (same origin, no CORS issues)
+  if (!isExternal) {
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error('direct fail');
+      if (res.ok) {
+        const blob = await res.blob();
+        const b64 = await blobToBase64(blob);
+        cache.set(url, b64);
+        return;
+      }
+    } catch { /* fall through */ }
+  }
+
+  // For external images, use proxy to avoid CORS
+  if (isExternal) {
+    try {
+      const res = await fetch('/api/proxy-image?url=' + encodeURIComponent(url));
+      if (res.ok) {
+        const blob = await res.blob();
+        const b64 = await blobToBase64(blob);
+        cache.set(url, b64);
+        return;
+      }
+    } catch { /* fall through */ }
+  }
+
+  // Fallback: direct fetch
+  try {
+    const res = await fetch(url, { mode: 'cors' });
+    if (res.ok) {
       const blob = await res.blob();
       const b64 = await blobToBase64(blob);
       cache.set(url, b64);
-    } catch {
-      // Last resort: draw to canvas
-      try {
-        const b64 = await drawToCanvas(url);
-        cache.set(url, b64);
-      } catch { /* give up */ }
+      return;
     }
-  }
+  } catch { /* fall through */ }
+
+  // Last resort: draw to canvas
+  try {
+    const b64 = await drawToCanvas(url);
+    cache.set(url, b64);
+  } catch { /* give up */ }
 }
 
 export function getCachedImage(url: string): string | undefined {

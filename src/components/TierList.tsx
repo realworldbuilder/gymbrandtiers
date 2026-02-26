@@ -131,7 +131,7 @@ export function TierList() {
       // Swap to base64 versions
       const originals = images.map(img => {
         const origSrc = img.src;
-        const cached = getCachedImage(origSrc);
+        const cached = getCachedImage(origSrc) || getCachedImage(new URL(origSrc, window.location.origin).pathname);
         if (cached) img.src = cached;
         return { img, src: origSrc };
       });
@@ -160,7 +160,7 @@ export function TierList() {
         // Try native share (mobile)
         if (navigator.share && navigator.canShare) {
           const file = new File([blob], 'tier-list.png', { type: 'image/png' });
-          const shareData = { files: [file], title: 'My Product Tier List', text: 'Check out my tier list — gymbrandtiers.vercel.app' };
+          const shareData = { files: [file], title: 'My Gym Brand Tier List', text: 'Check out my tier list — gymbrandtiers.vercel.app' };
           if (navigator.canShare(shareData)) {
             try {
               await navigator.share(shareData);
@@ -179,7 +179,7 @@ export function TierList() {
         // Fallback: download
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.download = 'product-tier-list.png';
+        link.download = 'gym-brand-tier-list.png';
         link.href = url;
         link.click();
         URL.revokeObjectURL(url);
@@ -201,7 +201,7 @@ export function TierList() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="font-display text-4xl tracking-wider text-text-primary leading-none">
-              Product Tier List
+              Gym Brand Tier List
             </h1>
             <div className="flex items-center gap-1.5 mt-1">
               <span className="font-mono text-xs text-text-muted">presented by</span>
@@ -269,7 +269,7 @@ export function TierList() {
                 <img src={`${BASE_PATH}/gs-icon.png`} alt="GymSignal" className="w-3.5 h-3.5 rounded-sm" />
                 <span className="font-mono text-[10px] text-text-muted">gymsignal.app</span>
               </div>
-              <span className="font-mono text-[10px] text-text-muted">Product Tier List</span>
+              <span className="font-mono text-[10px] text-text-muted">Gym Brand Tier List</span>
             </div>
             {TIER_LABELS.map(tier => (
               <TierRow
