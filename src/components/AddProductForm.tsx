@@ -33,12 +33,7 @@ export function AddProductForm({ onAddProduct }: AddProductFormProps) {
 
     setIsLoading(true);
     try {
-      // Call Brandfetch API directly from client-side
-      const res = await fetch(`https://api.brandfetch.io/v2/search/${encodeURIComponent(q)}`, {
-        headers: {
-          'Authorization': `Bearer Yd83VKTqp7BsUI6Wo3YXImTbzo76R2l7JFAdK7Fc-Bls-OgMMyEFH559R9JHaAwCtgMzmFSNyxgDXLqpynD0cg`,
-        },
-      });
+      const res = await fetch(`/api/brand-search?q=${encodeURIComponent(q)}`);
 
       if (!res.ok) {
         setResults([]);

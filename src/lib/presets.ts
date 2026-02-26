@@ -151,14 +151,12 @@ export const PRESETS: Record<string, PresetData> = {
       { id: 'sam-sulek', name: '@sam_sulek', image: pfp('sam_sulek'), url: 'https://instagram.com/sam_sulek' },
       { id: 'noel-deyzel', name: '@noeldeyzel_ (Noel Deyzel)', image: pfp('noeldeyzel_'), url: 'https://instagram.com/noeldeyzel_' },
       { id: 'jeff-nippard', name: '@jeffnippard', image: pfp('jeffnippard'), url: 'https://instagram.com/jeffnippard' },
-      { id: 'greg-doucette', name: '@gregdoucette', image: initials('Greg Doucette', '#3498db'), url: 'https://instagram.com/gregdoucette' },
       { id: 'will-tennyson', name: '@willtenny (Will Tennyson)', image: pfp('willtenny'), url: 'https://instagram.com/willtenny' },
       { id: 'jesse-james-west', name: '@jessejameswest', image: pfp('jessejameswest'), url: 'https://instagram.com/jessejameswest' },
       { id: 'alex-eubank', name: '@alexeubank', image: pfp('alexeubank'), url: 'https://instagram.com/alexeubank' },
       { id: 'david-laid', name: '@davidlaid', image: pfp('davidlaid'), url: 'https://instagram.com/davidlaid' },
       { id: 'lexx-little', name: '@lexx_little', image: pfp('lexx_little'), url: 'https://instagram.com/lexx_little' },
       { id: 'nick-walker', name: '@nick_walker39 (Nick Walker)', image: pfp('nick_walker39'), url: 'https://instagram.com/nick_walker39' },
-      { id: 'derek-mpmd', name: '@moreplatesmoredates (Derek)', image: initials('Derek MPMD', '#2ecc71'), url: 'https://instagram.com/moreplatesmoredates' },
       { id: 'larry-wheels', name: '@larrywheels', image: pfp('larrywheels'), url: 'https://instagram.com/larrywheels' },
       { id: 'mike-ohearn', name: '@mikeohearn', image: pfp('mikeohearn'), url: 'https://instagram.com/mikeohearn' },
       { id: 'ryan-humiston', name: '@ryanhumiston', image: pfp('ryanhumiston'), url: 'https://instagram.com/ryanhumiston' },
@@ -171,9 +169,7 @@ export const PRESETS: Record<string, PresetData> = {
       // Science / coaching
       { id: 'mike-israetel', name: '@rpstrength (Mike Israetel)', image: pfp('rpstrength'), url: 'https://instagram.com/rpstrength' },
       { id: 'layne-norton', name: '@biolayne (Layne Norton)', image: pfp('biolayne'), url: 'https://instagram.com/biolayne' },
-      { id: 'eugene-teo', name: '@eugeeneteo', image: initials('Eugene Teo', '#1abc9c'), url: 'https://instagram.com/eugeeneteo' },
       { id: 'john-meadows', name: '@mountaindog1 (John Meadows)', image: pfp('mountaindog1'), url: 'https://instagram.com/mountaindog1' },
-      { id: 'athlean-x', name: '@athleanx (Jeff Cavaliere)', image: initials('Jeff Cavaliere', '#e74c3c'), url: 'https://instagram.com/athleanx' },
     ]
   },
   'workout-anthems': {
