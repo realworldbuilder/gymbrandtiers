@@ -10,7 +10,7 @@ const pfp = (handle: string) =>
 
 // Exercise illustration from /public/exercises/
 const ex = (id: string) =>
-  `${BASE_PATH}/exercises/${id}.png`;
+  `${BASE_PATH}/exercises/${id}.jpg`;
 
 // Helper function to create initials-based SVG data URI for non-brand items
 const initials = (name: string, color: string) => {
